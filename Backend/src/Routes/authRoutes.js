@@ -15,11 +15,11 @@ route.post('/register',(req,res)=>{
         const setUser = db.prepare(`INSERT INTO users (email,username,password) VALUES (?,?,?)`)
         const result = setUser.run(email,username,hashPassword)
 
-        res.json({id:result.lastInsertRowid,email,username})
+        // res.json({id:result.lastInsertRowid,email,username})
 
-        // const token = jwt.sign({id:result.lastInsertRowid},process.env.JWT_SECRET,{expiresIn : '24h'})
+        const token = jwt.sign({id:result.lastInsertRowid},process.env.JWT_SECRET,{expiresIn : '24h'})
 
-        // res.json({token})
+        res.json({token})
 
     } catch (error) {
 
