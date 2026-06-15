@@ -16,9 +16,7 @@ function AuthPage() {
         await loginn(email,password)
     }
     else{
-        const data = await signup(email,username,password);
-        console.log(data);
-        
+        await signup(email,username,password); 
     }
   }
 
