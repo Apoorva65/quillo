@@ -1,9 +1,9 @@
 import { Box, Button, Typography, Divider } from '@mui/material'
 import CreateIcon from '@mui/icons-material/Create'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function LandingPage() {
-//   const navigate = useNavigate()
+  const navigate = useNavigate()
 
   return (
     <Box
@@ -58,7 +58,7 @@ function LandingPage() {
         <Button
           variant="contained"
           size="large"
-        //   onClick={() => navigate('/posts')}
+          onClick={() => navigate('/posts')}
           sx={{
             px: 4,
             py: 1.5,
@@ -74,7 +74,7 @@ function LandingPage() {
         <Button
           variant="outlined"
           size="large"
-        //   onClick={() => navigate('/login')}
+          onClick={() => navigate('/login')}
           sx={{
             px: 4,
             py: 1.5,

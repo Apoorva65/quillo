@@ -4,7 +4,8 @@ import express from 'express'
 const route = express.Router();
 
 route.get('/',(req,res)=>{
-    const getposts = db.prepare(`SELECT * FROM posts`);
+    const getposts = db.prepare(`SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id
+  ORDER BY posts.created_at DESC`);
     const posts = getposts.all()
     res.json(posts)
 });
