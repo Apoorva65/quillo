@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Box, Button, TextField, Typography, Divider } from '@mui/material'
 import CreateIcon from '@mui/icons-material/Create'
 import {signup,loginn} from '../api/auth.js'
+import {useNavigate} from 'react-router-dom'
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true)
@@ -9,14 +10,18 @@ function AuthPage() {
   const [password,setPassword] = useState('');
   const [username,setUsername] = useState('');
 
+  const naviagte = useNavigate();
+
   async function authHandle(e) {
     e.preventDefault();
 
     if(isLogin){
         await loginn(email,password)
+        naviagte('/posts');
     }
     else{
         await signup(email,username,password); 
+        naviagte('/posts');
     }
   }
 
