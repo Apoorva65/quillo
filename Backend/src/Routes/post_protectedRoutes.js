@@ -22,6 +22,13 @@ route.put('/:id',(req,res)=>{
     const {id} = req.params
     const putPost = db.prepare('UPDATE posts SET title = ?, image = ?, content = ? WHERE id = ? AND user_id = ?')
     const result  = putPost.run(title,image,content,id,req.userId)
+
+    if (result.changes === 0) {
+        return res.status(404).json({
+            message: "Post not found"
+        });
+    }
+
     res.json({id,title,image,content})
 });
 
@@ -29,6 +36,13 @@ route.delete('/:id',(req,res)=>{
     const {id} = req.params
     const deletePost = db.prepare(`DELETE FROM posts WHERE id = ? AND user_id = ?`)
     const result = deletePost.run(id,req.userId);
+
+    if (result.changes === 0) {
+    return res.status(404).json({
+        message: "Post not found"
+    });
+    }
+
     res.json({message : "post deleted"})
 });
 
