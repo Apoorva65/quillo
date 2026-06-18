@@ -3,6 +3,12 @@ import express from 'express'
 
 const route = express.Router();
 
+route.get('/mine',(req,res)=>{
+    const getPosts = db.prepare(`SELECT * FROM posts WHERE user_id = ?`) 
+    const myPosts = getPosts.all(req.userId); 
+    res.json(myPosts); 
+})
+
 route.post('/',(req,res)=>{
     const {title,image,content} = req.body;
     const pushPost = db.prepare(`INSERT INTO posts (title,image,content,user_id) VALUES (?,?,?,?)`)

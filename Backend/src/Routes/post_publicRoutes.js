@@ -10,7 +10,7 @@ route.get('/',(req,res)=>{
     res.json(posts)
 });
 
-route.get('/:id',(req,res)=>{
+route.get('/post/:id',(req,res)=>{
     const {id} = req.params
     const getone = db.prepare(`SELECT * FROM posts WHERE id = ?`)
     const post = getone.get(id);
