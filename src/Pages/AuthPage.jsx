@@ -9,19 +9,26 @@ function AuthPage() {
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
   const [username,setUsername] = useState('');
+  const [error, setError] = useState('');
 
   const naviagte = useNavigate();
 
   async function authHandle(e) {
     e.preventDefault();
 
-    if(isLogin){
-        await loginn(email,password)
+    try {
+      if (isLogin) {
+        await loginn(email, password);
         naviagte('/posts');
-    }
-    else{
-        await signup(email,username,password); 
+      } else {
+        await signup(email, username, password);
         naviagte('/posts');
+      }
+  } catch (error) {
+      setError(
+        error.response?.data?.message ||
+        "Something went wrong"
+      );
     }
   }
 
@@ -67,7 +74,17 @@ function AuthPage() {
           )}
           <TextField label="Email" type="email" size="small" fullWidth value={email} onChange={(e)=>setEmail(e.target.value)}/>
           <TextField label="Password" type="password" size="small" fullWidth value={password} onChange={(e)=>setPassword(e.target.value)}/>
-
+          {error && (
+            <Typography
+              color="error"
+              sx={{
+                fontSize: "0.9rem",
+                textAlign: "center",
+              }}
+            >
+              {error}
+            </Typography>
+          )}
           <Button
             fullWidth
             variant="contained"

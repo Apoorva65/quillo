@@ -26,10 +26,12 @@ route.post('/register',(req,res)=>{
         console.log(error);
 
         if(error.errcode===2067){
-            res.json({message : "Email already exists"})
+            return res.status(409).json({message : "Email already exists"})
         }
         else{
-            res.sendStatus(503)
+            return res.status(503).json({
+                message: "Server Error"
+            });
         }
         
     }
@@ -58,8 +60,9 @@ route.post('/login',(req,res)=>{
         res.json({token})
 
     } catch (error) {
-        console.log(error);
-        res.sendStatus(503)
+        return res.status(503).json({
+                message: "Server Error"
+            });
     }
 })
 
