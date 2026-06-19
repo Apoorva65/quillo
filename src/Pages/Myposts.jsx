@@ -16,7 +16,6 @@ function Myposts({}) {
     <>
     <Navbar/>
     <Box sx={{ maxWidth: 680, margin: '0 auto', px: 3, py: 6 }}>
-      {/* Post list */}
       {myposts.length===0?(
         <Box
             sx={{
@@ -62,6 +61,7 @@ function Myposts({}) {
             </Typography>
 
             <Typography
+              component="div"
               sx={{
                 color: 'text.secondary',
                 fontSize: '0.92rem',
@@ -72,9 +72,8 @@ function Myposts({}) {
                 WebkitBoxOrient: 'vertical',
                 overflow: 'hidden',
               }}
-            >
-              {post.content}
-            </Typography>
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>

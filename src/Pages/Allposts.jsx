@@ -53,6 +53,7 @@ function Allposts({allPosts}) {
             </Typography>
 
             <Typography
+              component="div"
               sx={{
                 color: 'text.secondary',
                 fontSize: '0.92rem',
@@ -63,9 +64,8 @@ function Allposts({allPosts}) {
                 WebkitBoxOrient: 'vertical',
                 overflow: 'hidden',
               }}
-            >
-              {post.content}
-            </Typography>
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
 
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>

@@ -17,7 +17,7 @@ function LandingPage() {
         px: 3,
       }}
     >
-      {/* Logo */}
+
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 5 }}>
         <CreateIcon sx={{ fontSize: 32, color: 'text.primary' }} />
         <Typography variant="h5" sx={{ fontWeight: 500, letterSpacing: '-0.02em' }}>
@@ -25,7 +25,7 @@ function LandingPage() {
         </Typography>
       </Box>
 
-      {/* Headline */}
+
       <Typography
         variant="h2"
         sx={{
@@ -39,7 +39,7 @@ function LandingPage() {
         A place for ideas worth sharing
       </Typography>
 
-      {/* Subtext */}
+
       <Typography
         variant="body1"
         sx={{
@@ -53,7 +53,7 @@ function LandingPage() {
         Read thoughtful posts from writers who care. No noise, no algorithm — just writing.
       </Typography>
 
-      {/* CTAs */}
+
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center' }}>
         <Button
           variant="contained"
@@ -89,7 +89,7 @@ function LandingPage() {
         </Button>
       </Box>
 
-      {/* Value props */}
+  
       <Box
         sx={{
           display: 'flex',

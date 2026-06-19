@@ -12,7 +12,7 @@ route.get('/mine',(req,res)=>{
 route.post('/',(req,res)=>{
     const {title,image,content} = req.body;
     const pushPost = db.prepare(`INSERT INTO posts (title,image,content,user_id) VALUES (?,?,?,?)`)
-    const result = pushPost.run(title,image,content,req.userId);
+    const result = pushPost.run(title,image||null,content,req.userId);
 
     res.json({id:result.lastInsertRowid,title,image,content})
 });

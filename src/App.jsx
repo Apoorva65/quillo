@@ -8,14 +8,16 @@ import { useEffect, useState } from 'react'
 import {Route, Routes} from 'react-router-dom'
 import {getAllPosts} from './api/posts.js'
 import Myposts from './Pages/Myposts.jsx'
+import Createpost from './Pages/Createpost.jsx'
 
 function App() {
 
   const [posts,setPosts] = useState([]);
+  const [toggle,setToggle] = useState(true);
 
   useEffect(()=>{
      getAllPosts().then(setPosts).catch(console.error)
-  },[])
+  },[toggle])
   
   return (
     <ThemeProvider theme={theme}>
@@ -25,6 +27,7 @@ function App() {
         <Route path='/login' element={<AuthPage/>}/>
         <Route path='/posts' element={<Allposts  allPosts={posts}/>}/>
         <Route path='/my-posts' element={<Myposts/>}/>
+        <Route path='/create' element={<Createpost toggle={toggle} setToggle={setToggle}/>}/>
       </Routes>
     </ThemeProvider>
   )
