@@ -7,6 +7,7 @@ import Navbar from './components/Navbar.jsx'
 import { useEffect, useState } from 'react'
 import {Route, Routes} from 'react-router-dom'
 import {getAllPosts} from './api/posts.js'
+import Myposts from './Pages/Myposts.jsx'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
         <Route path='/' element={<LandingPage/>}/>
         <Route path='/login' element={<AuthPage/>}/>
         <Route path='/posts' element={<Allposts  allPosts={posts}/>}/>
+        <Route path='/my-posts' element={<Myposts/>}/>
       </Routes>
     </ThemeProvider>
   )
