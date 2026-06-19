@@ -1,15 +1,31 @@
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import CreateIcon from "@mui/icons-material/Create";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 
 function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const token = localStorage.getItem("token");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
   };
+
+  const navButtonStyle = (path) => ({
+    textTransform: "none",
+    borderRadius: 0,
+    color: "inherit",
+    borderBottom:
+      location.pathname === path
+        ? "2px solid"
+        : "2px solid transparent",
+    borderColor:
+      location.pathname === path
+        ? "primary.main"
+        : "transparent",
+    pb: 0.5,
+  });
 
   return (
     <AppBar
@@ -56,35 +72,36 @@ function Navbar() {
           </Button>
         </Box>
 
-        {/* Right Side */}
         {token ? (
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 2,
+              gap: 1,
             }}
           >
             <Button
-              variant="contained"
-              onClick={() => navigate("/create")}
-              sx={{
-                textTransform: "none",
-                borderRadius: 3,
-                px: 3,
-              }}
+              color="inherit"
+              onClick={() => navigate("/posts")}
+              sx={navButtonStyle("/posts")}
             >
-              Write
+              Posts
             </Button>
 
             <Button
               color="inherit"
               onClick={() => navigate("/my-posts")}
-              sx={{
-                textTransform: "none",
-              }}
+              sx={navButtonStyle("/my-posts")}
             >
               My Posts
+            </Button>
+
+            <Button
+              color="inherit"
+              onClick={() => navigate("/create")}
+              sx={navButtonStyle("/create")}
+            >
+              Write
             </Button>
 
             <Button
@@ -92,6 +109,7 @@ function Navbar() {
               onClick={handleLogout}
               sx={{
                 textTransform: "none",
+                ml: 1,
               }}
             >
               Logout
