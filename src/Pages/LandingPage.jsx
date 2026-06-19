@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 function LandingPage() {
   const navigate = useNavigate()
+  const token = localStorage.getItem('token');
 
   return (
     <Box
@@ -74,7 +75,13 @@ function LandingPage() {
         <Button
           variant="outlined"
           size="large"
-          onClick={() => navigate('/login')}
+          onClick={() => {
+            if (token) {
+              navigate('/create');
+            } else {
+              navigate('/login');
+            }
+          }}
           sx={{
             px: 4,
             py: 1.5,
