@@ -2,15 +2,19 @@ import { Box, Typography, Divider } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import Navbar from '../components/Navbar.jsx'
 import { useEffect, useState } from 'react'
-import { getOnePost } from '../api/posts.js'
+import { getOnePost,updatePost,deletePost } from '../api/posts.js'
 import { useParams } from 'react-router-dom'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useNavigate } from 'react-router-dom'
 
-function SinglePost() {
+function SinglePost({toggle,setToggle}) {
 
   const [onePost,setOnePost] = useState();
   const {id} = useParams();
+  const currentUserId = Number(localStorage.getItem('userId'));
+  const naviagte = useNavigate();
+  const [error, setError] = useState('');
 
   useEffect(()=>{
     const fetchPost = async () =>{
@@ -24,9 +28,34 @@ function SinglePost() {
     return null;
   }
 
+
+  async function handleDelete() {
+    try {
+      await deletePost(id);
+      setToggle(!toggle)
+      naviagte('/my-posts')
+    } catch (error) {
+      setError(
+        error.response?.data?.message ||
+        "Something went wrong"
+      );
+    }
+  }
+
   return (
     <>
       <Navbar />
+      {error && (
+            <Typography
+              color="error"
+              sx={{
+                fontSize: "0.9rem",
+                textAlign: "center",
+              }}
+            >
+              {error}
+            </Typography>
+          )}
       <Box sx={{ maxWidth: 680, margin: '0 auto', px: 3, py: 6 }}>
 
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 5 }}>
@@ -48,16 +77,18 @@ function SinglePost() {
             <Typography sx={{ fontSize: '0.85rem' }}>All posts</Typography>
           </Box>
 
+          {onePost.user_id===currentUserId && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <EditIcon
               sx={{ fontSize: 18, color: 'text.secondary', cursor: 'pointer', '&:hover': { color: 'text.primary' }, transition: 'color 0.15s' }}
-              onClick={() => navigate(`/posts/${id}/edit`)}
+              onClick={()=>naviagte(`/posts/edit/${onePost.id}`)}
             />
             <DeleteIcon
               sx={{ fontSize: 18, color: 'text.secondary', cursor: 'pointer', '&:hover': { color: 'error.main' }, transition: 'color 0.15s' }}
-              onClick={() => console.log('delete')}
+              onClick={handleDelete}
             />
           </Box>
+          )}
 
         </Box>
 

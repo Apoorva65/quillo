@@ -10,6 +10,7 @@ import {getAllPosts} from './api/posts.js'
 import Myposts from './Pages/Myposts.jsx'
 import Createpost from './Pages/Createpost.jsx'
 import SinglePost from './Pages/SinglePost.jsx'
+import EditPost from './Pages/EditPost.jsx'
 
 function App() {
 
@@ -33,7 +34,8 @@ function App() {
         <Route path='/posts' element={<Allposts  allPosts={posts}/>}/>
         <Route path='/my-posts' element={<Myposts/>}/>
         <Route path='/create' element={<Createpost toggle={toggle} setToggle={setToggle}/>}/>
-        <Route path='/post/:id' element={<SinglePost/>}/>
+        <Route path='/post/:id' element={<SinglePost toggle={toggle} setToggle={setToggle}/>}/>
+        <Route path='/posts/edit/:id' element={<EditPost toggle={toggle} setToggle={setToggle}/>}/>
       </Routes>
     </ThemeProvider>
   )

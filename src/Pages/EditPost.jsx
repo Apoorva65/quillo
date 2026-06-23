@@ -1,11 +1,11 @@
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
-import { use, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { Box, TextField, Button, Typography,Divider } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import Navbar from '../components/Navbar';
-import { addPosts } from '../api/posts';
-import { useNavigate } from 'react-router-dom';
+import { addPosts, getOnePost, updatePost } from '../api/posts';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const modules = {
   toolbar: [
@@ -16,15 +16,26 @@ const modules = {
   ],
 };
 
-function Createpost({toggle,setToggle}) {
+function EditPost({toggle,setToggle}) {
 
   const naviagte = useNavigate();
+  const {id} = useParams();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState('');
 
-  const handleSubmit = async () => {
-      await addPosts({title,image,content});
+  useEffect(()=>{
+    async function fetchThisPost() {
+        const post = await getOnePost(id);
+        setTitle(post.title||'');
+        setImage(post.image||'');
+        setContent(post.content||'');
+    }
+    fetchThisPost();
+  },[id])
+
+  const handleUpdate = async () => {
+      await updatePost(id,{title,image,content});
       setToggle(!toggle)
       naviagte('/my-posts')
   };
@@ -41,7 +52,7 @@ function Createpost({toggle,setToggle}) {
         <Button
           variant="contained"
           endIcon={<SendIcon />}
-          onClick={handleSubmit}
+          onClick={handleUpdate}
           sx={{ borderRadius: 99, textTransform: 'none' }}
         >
           Publish
@@ -91,4 +102,4 @@ function Createpost({toggle,setToggle}) {
   );
 }
 
-export default Createpost;
+export default EditPost;
