@@ -17,7 +17,11 @@ function App() {
   const [toggle,setToggle] = useState(true);
 
   useEffect(()=>{
-     getAllPosts().then(setPosts).catch(console.error)
+     const fetchPosts = async()=>{
+      const posts = await getAllPosts();
+      setPosts(posts);
+     }
+     fetchPosts();
   },[toggle])
   
   return (

@@ -3,13 +3,19 @@ import CreateIcon from '@mui/icons-material/Create'
 import Navbar from '../components/Navbar.jsx';
 import { useEffect, useState } from 'react';
 import { getMyPosts } from '../api/posts.js';
+import { useNavigate } from 'react-router-dom';
 
 function Myposts({}) {
 
+    const navigate = useNavigate();
     const [myposts,setMyposts] = useState([]);
 
     useEffect(()=>{
-      getMyPosts().then(setMyposts).catch(console.error)
+      const fetchmyPosts = async()=>{
+        const mypost = await getMyPosts();
+        setMyposts(mypost);
+      }
+      fetchmyPosts();
     },[])
 
   return (
@@ -52,6 +58,7 @@ function Myposts({}) {
               '&:hover': { opacity: 0.75 },
               transition: 'opacity 0.15s',
             }}
+            onClick = {()=>navigate(`/post/${post.id}`)}
           >
             <Typography
               variant="h6"
