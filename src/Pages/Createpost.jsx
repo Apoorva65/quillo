@@ -21,13 +21,41 @@ function Createpost({toggle,setToggle}) {
   const naviagte = useNavigate();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [image, setImage] = useState('');
+  const [imageFile, setImageFile] = useState(null)
+  const [imagePreview, setImagePreview] = useState('')
+  const [uploading, setUploading] = useState(false)
 
   const handleSubmit = async () => {
-      await addPosts({title,image,content});
+    let imageUrl = ''
+    if (imageFile) {
+      setUploading(true)
+      imageUrl = await uploadToCloudinary(imageFile)
+      setUploading(false)
+    }
+      await addPosts({title,image:imageUrl,content});
       setToggle(!toggle)
       naviagte('/my-posts')
   };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    setImageFile(file)
+    setImagePreview(URL.createObjectURL(file)) // local preview
+  }
+
+  const uploadToCloudinary = async (file) => {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('upload_preset', 'blog_quillo') // from Cloudinary dashboard
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/dl9hvgkbm/image/upload', {
+      method: 'POST',
+      body: formData,
+    })
+    const data = await res.json()
+    return data.secure_url // this is the URL you save to DB
+  }
 
   return (
     <>
@@ -57,28 +85,21 @@ function Createpost({toggle,setToggle}) {
 
       <Divider sx={{ mb: 3 }} />
 
-      {/* <Box
+      <Box
         component="label"
         sx={{
           display: 'flex', flexDirection: 'column', alignItems: 'center',
           border: '1px dashed', borderColor: 'divider', borderRadius: 2,
-          py: 3, mb: 3, cursor: 'pointer', '&:hover': { bgcolor: 'action.hover' }
+          py: 3, mb: 3, cursor: 'pointer', '&:hover': { bgcolor: 'action.hover' },
+          overflow: 'hidden',
         }}
       >
-        <input type="file" hidden accept="image/*" onChange={e => setImage(e.target.files[0])} />
-        <Typography sx={{ color: 'text.secondary', fontSize: '0.9rem' }}>
-          {image ? image.name : 'Add a cover image'}
-        </Typography>
-      </Box> */}
-
-      <TextField
-        fullWidth
-        variant="outlined"
-        placeholder="Cover image URL (optional)"
-        value={image}
-        onChange={e => setImage(e.target.value)}
-        sx={{ mb: 3 }}
-      />
+        <input type="file" hidden accept="image/*" onChange={handleImageChange} />
+        {imagePreview
+          ? <Box component="img" src={imagePreview} sx={{ width: '100%', maxHeight: 200, objectFit: 'cover' }} />
+          : <Typography sx={{ color: 'text.secondary', fontSize: '0.9rem' }}>Add a cover image</Typography>
+        }
+      </Box>
 
       <ReactQuill
         value={content}
