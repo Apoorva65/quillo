@@ -1,8 +1,12 @@
 import { Box, Typography, Divider } from '@mui/material'
 import CreateIcon from '@mui/icons-material/Create'
 import Navbar from '../components/Navbar.jsx';
+import { useNavigate } from 'react-router-dom';
 
 function Allposts({allPosts}) {
+
+  const navigate = useNavigate();
+
   return (
     <>
     <Navbar/>
@@ -44,6 +48,7 @@ function Allposts({allPosts}) {
               '&:hover': { opacity: 0.75 },
               transition: 'opacity 0.15s',
             }}
+            onClick = {()=>navigate(`/post/${post.id}`)}
           >
             <Typography
               variant="h6"

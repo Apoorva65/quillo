@@ -9,6 +9,7 @@ import {Route, Routes} from 'react-router-dom'
 import {getAllPosts} from './api/posts.js'
 import Myposts from './Pages/Myposts.jsx'
 import Createpost from './Pages/Createpost.jsx'
+import SinglePost from './Pages/SinglePost.jsx'
 
 function App() {
 
@@ -28,6 +29,7 @@ function App() {
         <Route path='/posts' element={<Allposts  allPosts={posts}/>}/>
         <Route path='/my-posts' element={<Myposts/>}/>
         <Route path='/create' element={<Createpost toggle={toggle} setToggle={setToggle}/>}/>
+        <Route path='/post/:id' element={<SinglePost/>}/>
       </Routes>
     </ThemeProvider>
   )
