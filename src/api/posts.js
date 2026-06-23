@@ -13,3 +13,8 @@ export const getMyPosts = async () =>{
 export const addPosts = async ({title,image,content})=>{
     await api.post('/posts',{title,image,content});
 }
+
+export const getOnePost = async()=>{
+    const {data} = api.get(`/post/${id}`);
+    return data;
+}
