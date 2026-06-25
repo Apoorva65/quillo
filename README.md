@@ -26,6 +26,6 @@ A minimal blogging platform where users can write, edit, and discover posts.
 
 - Node.js
 - Express
-- SQLite (better-sqlite3)
+- PostgreSQL
 - JWT (jsonwebtoken)
 - bcrypt
