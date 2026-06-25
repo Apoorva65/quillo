@@ -1,21 +1,29 @@
-import {DatabaseSync} from 'node:sqlite'
+import pg from 'pg'
 
-const db = new DatabaseSync('blog.db')
+const {Pool} = pg;
 
-db.exec(`CREATE TABLE IF NOT EXISTS users(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email STRING UNIQUE NOT NULL,
-    username STRING NOT NULL,
-    password STRING NOT NULL
+const pool = new Pool({
+    host : 'localhost',
+    database : process.env.DATABASE,
+    user : process.env.USER,
+    password : process.env.PASSWORD,
+    port : process.env.DB_PORT
+})
+
+await pool.query(`CREATE TABLE IF NOT EXISTS users(
+    id SERIAL PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    username TEXT NOT NULL,
+    password TEXT NOT NULL
     )`)
 
-db.exec(`CREATE TABLE IF NOT EXISTS posts(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title STRING NOT NULL,
-    image STRING,
-    content STRING,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+await pool.query(`CREATE TABLE IF NOT EXISTS posts(
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    image TEXT,
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
     )`)
 
-export default db;
+export default pool;

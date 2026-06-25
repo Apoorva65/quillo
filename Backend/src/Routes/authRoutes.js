@@ -1,23 +1,20 @@
 import express from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import db from '../db.js'
+import pool from '../db.js'
 
 const route = express.Router();
 
-route.post('/register',(req,res)=>{
+route.post('/register',async(req,res)=>{
     const {email,username,password} = req.body
 
-    const hashPassword = bcrypt.hashSync(password,7);
+    const hashPassword = await bcrypt.hash(password,7);
 
     try {
 
-        const setUser = db.prepare(`INSERT INTO users (email,username,password) VALUES (?,?,?)`)
-        const result = setUser.run(email,username,hashPassword)
+        const result = await pool.query(`INSERT INTO users (email,username,password) VALUES ($1,$2,$3) RETURNING id`,[email,username,hashPassword])
 
-        // res.json({id:result.lastInsertRowid,email,username})
-
-        const token = jwt.sign({id:result.lastInsertRowid},process.env.JWT_SECRET,{expiresIn : '24h'})
+        const token = jwt.sign({id:result.rows[0].id},process.env.JWT_SECRET,{expiresIn : '24h'})
 
         res.json({token})
 
@@ -25,7 +22,7 @@ route.post('/register',(req,res)=>{
 
         console.log(error);
 
-        if(error.errcode===2067){
+        if(error.code==='23505'){
             return res.status(409).json({message : "Email already exists"})
         }
         else{
@@ -37,19 +34,19 @@ route.post('/register',(req,res)=>{
     }
 })
 
-route.post('/login',(req,res)=>{
+route.post('/login',async(req,res)=>{
     const {email,password} = req.body
 
     try {
         
-        const getUser = db.prepare(`SELECT * FROM users WHERE email = ?`)
-        const user = getUser.get(email);
+        const result = await pool.query(`SELECT * FROM users WHERE email = $1`,[email])
+        const user = result.rows[0];
 
         if(!user){
             return res.status(404).json({message:"No user found"})
         }
 
-        const checkPass = bcrypt.compareSync(password,user.password);
+        const checkPass = await bcrypt.compare(password,user.password);
 
         if(!checkPass){
             return res.status(401).json({message:"Incorrect Password"})
